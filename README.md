@@ -130,4 +130,8 @@ Through this project, we understand:
 
 ## 🎓 Conclusion
 
-The **E-commerce Product Sorting System**
+The E-commerce Product Sorting System successfully demonstrates the practical implementation of the Merge Sort algorithm using the Divide and Conquer technique in Python. The application allows users to sort products based on their prices in ascending and descending order, making product organization simple and efficient.
+
+Through this project, we gain a better understanding of how recursive algorithms work, how complex problems can be divided into smaller subproblems, and how sorted results can be combined efficiently. With a time complexity of O(n log n), Merge Sort provides an efficient approach to sorting large amounts of product data.
+
+Overall, this case study strengthens our understanding of fundamental Data Structures and Algorithms concepts and demonstrates how they can be applied to real-world applications such as e-commerce platforms.
