@@ -1,84 +1,83 @@
 
-# Customer Service Management System Using Queue
+# Google Calendar Event Scheduling Using Greedy Strategy
 
-customers = []
-
-
-def add_customer():
-    name = input("Enter customer name: ").strip()
-
-    if name:
-        customers.append(name)
-        print(name, "has been added to the waiting queue.")
-    else:
-        print("Customer name cannot be empty!")
-
-
-def serve_customer():
-    if not customers:
-        print("No customers waiting for service.")
-    else:
-        name = customers.pop(0)
-        print("Now serving customer:", name)
+events = [
+    {"name": "Project Meeting", "start": "09:00", "end": "10:00"},
+    {"name": "Lecture", "start": "09:30", "end": "10:30"},
+    {"name": "Team Discussion", "start": "10:00", "end": "11:00"},
+    {"name": "Lunch Break", "start": "11:00", "end": "12:00"},
+    {"name": "Coding Session", "start": "10:30", "end": "12:00"},
+    {"name": "Lab Session", "start": "12:00", "end": "13:30"},
+    {"name": "Presentation", "start": "13:00", "end": "14:00"},
+    {"name": "Study Group", "start": "14:00", "end": "15:00"}
+]
 
 
-def display_queue():
-    if not customers:
-        print("The waiting queue is empty.")
-    else:
-        print("\nCustomers Waiting for Service:")
-        print("-" * 35)
-
-        for position, name in enumerate(customers, start=1):
-            print(f"{position}. {name}")
-
-        print("-" * 35)
+def to_minutes(time):
+    hours, minutes = map(int, time.split(":"))
+    return hours * 60 + minutes
 
 
-def search_customer():
-    name = input("Enter customer name to search: ").strip()
+def display_events():
+    print("\nAvailable Events:")
+    print("-" * 45)
 
-    for position, customer in enumerate(customers, start=1):
-        if customer.lower() == name.lower():
-            print(f"{name} is waiting at position {position}.")
-            return
+    for event in sorted(events, key=lambda e: e["start"]):
+        print(
+            f'{event["name"]:<20} '
+            f'{event["start"]} - {event["end"]}'
+        )
 
-    print(name, "is not in the waiting queue.")
 
+def schedule_events():
+    # Greedy strategy: select events that finish earliest
+    sorted_events = sorted(
+        events,
+        key=lambda event: to_minutes(event["end"])
+    )
 
-def queue_status():
-    print("Total customers waiting:", len(customers))
+    selected = []
+    last_end_time = 0
+
+    for event in sorted_events:
+        start_time = to_minutes(event["start"])
+        end_time = to_minutes(event["end"])
+
+        if start_time >= last_end_time:
+            selected.append(event)
+            last_end_time = end_time
+
+    print("\nOptimized Event Schedule")
+    print("-" * 45)
+
+    for event in selected:
+        print(
+            f'{event["name"]:<20} '
+            f'{event["start"]} - {event["end"]}'
+        )
+
+    print("-" * 45)
+    print("Total events scheduled:", len(selected))
+    print("Strategy: Greedy Activity Selection")
 
 
 while True:
-    print("\n===== Customer Service Management System =====")
-    print("1. Add Customer")
-    print("2. Serve Customer")
-    print("3. Display Waiting Queue")
-    print("4. Search Customer")
-    print("5. Queue Status")
-    print("6. Exit")
+    print("\n===== Google Calendar Event Scheduler =====")
+    print("1. Display Available Events")
+    print("2. Generate Optimized Schedule")
+    print("3. Exit")
 
-    choice = input("Enter your choice: ").strip()
+    choice = input("Enter your choice: ")
 
     if choice == "1":
-        add_customer()
+        display_events()
 
     elif choice == "2":
-        serve_customer()
+        schedule_events()
 
     elif choice == "3":
-        display_queue()
-
-    elif choice == "4":
-        search_customer()
-
-    elif choice == "5":
-        queue_status()
-
-    elif choice == "6":
-        print("Thank you for using Customer Service Management System!")
+        print("Exiting Google Calendar Event Scheduler.")
         break
 
     else:
-        print("Invalid choice! Please enter a number from 1 to 6.")
+        print("Invalid choice! Please enter 1, 2, or 3.")
